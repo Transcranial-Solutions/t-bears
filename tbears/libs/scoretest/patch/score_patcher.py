@@ -60,13 +60,11 @@ def patch_score_method(method):
 
         if method_flag & ConstBitFlag.ReadOnly == ConstBitFlag.ReadOnly:
             Context._set_query_context(context)
-        elif (method_flag & ConstBitFlag.External) == ConstBitFlag.External:
+        else:
             Context._set_invoke_context(context)
-        elif method_flag & ConstBitFlag.Payable:
-            Context._set_invoke_context(context)
+
+        if method_flag & ConstBitFlag.Payable:
             IcxEngine.transfer(context, context.msg.sender, context.current_address, context.msg.value)
-        elif method_name in ('on_install', 'on_update'):
-            Context._set_invoke_context(context)
 
         result = method(*args, **kwargs)
         return result
