@@ -1,0 +1,26 @@
+dist: xenial  # required for Python >= 3.7
+language: python
+python:
+  - "3.7"
+
+branches:
+  only:
+  - master
+  - develop
+  - /^release-.*$/
+  - travis-test
+
+install:
+  - pip install -r requirements.txt
+
+script:
+  - python setup.py test
+
+deploy:
+  provider: pypi
+  distributions: sdist bdist_wheel
+  server: https://test.pypi.org/legacy/
+  user: iconfoundation
+  password: $PYPI_PW
+  on:
+    branch: travis-test
